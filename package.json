@@ -1,0 +1,20 @@
+{
+  "name": "brainfix-webapp",
+  "version": "0.0.1",
+  "description": "A fix for the brain.",
+  "private": true,
+  "scripts": {
+    "build": "mkdir dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alxkhr/brainfix-webapp.git"
+  },
+  "author": "Alexander Kehr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alxkhr/brainfix-webapp/issues"
+  },
+  "homepage": "https://brainfix.netlify.com"
+}
