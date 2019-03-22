@@ -1,5 +1,7 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -33,7 +35,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
-  plugins: [new VueLoaderPlugin()],
+  plugins: [new VueLoaderPlugin(), new CleanWebpackPlugin(), new CopyWebpackPlugin(['res/html'])],
   devServer: {
     contentBase: 'res/html',
     historyApiFallback: {
