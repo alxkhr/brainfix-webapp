@@ -5,7 +5,7 @@
       v-model="password"
       type="password"
     >
-    <button v-on:click="register">register</button>
+    <button v-on:click="login">login</button>
   </form>
 </template>
 
@@ -17,9 +17,9 @@ export default Vue.extend({
     password: '',
   }),
   methods: {
-    register: async function(event: MouseEvent) {
+    login: async function(event: MouseEvent) {
       event.preventDefault();
-      const response = await fetch('https://brainfix.retterdesapok.de/api/register', {
+      const response = await fetch('https://brainfix.retterdesapok.de/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

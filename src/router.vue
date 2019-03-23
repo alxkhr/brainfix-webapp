@@ -2,7 +2,8 @@
   <div>
     <div>
       <router-link to="/note-list">notes</router-link>
-      <router-link to="/register">login</router-link>
+      <router-link to="/register">register</router-link>
+      <router-link to="/login">login</router-link>
     </div>
     <router-view></router-view>
   </div>
@@ -14,6 +15,7 @@ import VueRouter from 'vue-router';
 import NoteDetail from './note/note-detail.vue';
 import NoteList from './note/note-list.vue';
 import Register from './authentication/register.vue';
+import Login from './authentication/login.vue';
 
 export default Vue.extend({
   router: new VueRouter({
@@ -22,6 +24,7 @@ export default Vue.extend({
       { path: '/note-details', component: NoteDetail, props: (route) => ({ id: route.query.id }) },
       { path: '/note-list', component: NoteList },
       { path: '/register', component: Register },
+      { path: '/login', component: Login },
     ],
   }),
 });

@@ -36,10 +36,4 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   plugins: [new VueLoaderPlugin(), new CleanWebpackPlugin(), new CopyWebpackPlugin(['res/html'])],
-  devServer: {
-    contentBase: 'res/html',
-    historyApiFallback: {
-      index: 'index.html',
-    },
-  },
 };
