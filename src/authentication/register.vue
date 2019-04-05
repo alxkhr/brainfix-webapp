@@ -5,12 +5,14 @@
       v-model="password"
       type="password"
     >
-    <button v-on:click="register">register</button>
+    <button @click="register">register</button>
   </form>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { AuthenticationService } from './authentication.service';
+
 export default Vue.extend({
   data: () => ({
     user: '',
@@ -19,22 +21,12 @@ export default Vue.extend({
   methods: {
     register: async function(event: MouseEvent) {
       event.preventDefault();
-      const response = await fetch('https://brainfix.retterdesapok.de/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: this.user, password: this.password }),
-      });
-      if (!response.ok) {
-        return;
+      try {
+        await AuthenticationService.register(this.user, this.password);
+        this.$router.push('/note-list');
+      } catch (e) {
+        console.error(e);
       }
-      const token = await response.text();
-      if (!token) {
-        return;
-      }
-      localStorage.setItem('token', token);
-      this.$router.push('/note-list');
     },
   },
 });

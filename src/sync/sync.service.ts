@@ -1,9 +1,12 @@
-const serverUrl = 'https://brainfix.retterdesapok.de/api';
+import { ConfigService } from '../config/config.service';
 
 export namespace SyncService {
   export async function getJson<T>(url: string): Promise<T | undefined> {
-    const token = localStorage.getItem('token') || '';
-    const response = await fetch(`${serverUrl}/${url}`, {
+    const token = ConfigService.getToken();
+    if (!token) {
+      return;
+    }
+    const response = await fetch(`${ConfigService.getServerUrl()}/${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -12,7 +15,7 @@ export namespace SyncService {
       body: JSON.stringify({ lastSync: 0 }),
     });
     if (!response.ok) {
-      return undefined;
+      return;
     }
     return response.json();
   }
@@ -23,8 +26,11 @@ export namespace SyncService {
     currentState: T,
     lastSync: string,
   ): Promise<T | undefined> {
-    const token = localStorage.getItem('token') || '';
-    const response = await fetch(`${serverUrl}/${url}`, {
+    const token = ConfigService.getToken();
+    if (!token) {
+      return;
+    }
+    const response = await fetch(`${ConfigService.getServerUrl()}/${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,7 +39,7 @@ export namespace SyncService {
       body: JSON.stringify({ lastSync, [resourceName]: currentState }),
     });
     if (!response.ok) {
-      return undefined;
+      return;
     }
     return response.json();
   }

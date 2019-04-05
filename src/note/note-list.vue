@@ -6,7 +6,7 @@
       :note="note"
       :on-remove="onRemove"
     ></note-preview>
-    <button v-on:click="create">create</button>
+    <button @click="create">create</button>
   </div>
 </template>
 

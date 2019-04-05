@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 
+import { ConfigService } from '../config/config.service';
 import { SyncService } from '../sync/sync.service';
 import { db } from './note-db';
 import { Note } from './note.model';
@@ -30,7 +31,7 @@ export namespace NoteService {
   }
   export function startPolling(): void {
     setInterval(async () => {
-      if (!localStorage.getItem('token')) {
+      if (!ConfigService.getToken()) {
         return;
       }
       const notes = await db.notes.toArray();

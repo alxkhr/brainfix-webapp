@@ -1,8 +1,8 @@
 <template>
   <div>
     <span>{{ note.content }}</span>
-    <button v-on:click="edit">edit</button>
-    <button v-on:click="remove">remove</button>
+    <button @click="edit">edit</button>
+    <button @click="remove">remove</button>
   </div>
 </template>
 

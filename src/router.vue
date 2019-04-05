@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div>
-      <router-link to="/note-list">notes</router-link>
-      <router-link to="/register">register</router-link>
-      <router-link to="/login">login</router-link>
-    </div>
+    <navigation />
     <router-view></router-view>
   </div>
 </template>
@@ -16,8 +12,13 @@ import NoteDetail from './note/note-detail.vue';
 import NoteList from './note/note-list.vue';
 import Register from './authentication/register.vue';
 import Login from './authentication/login.vue';
+import SyncSettings from './sync/sync-settings.vue';
+import Navigation from './navigation/navigation.vue';
 
 export default Vue.extend({
+  components: {
+    Navigation,
+  },
   router: new VueRouter({
     mode: 'hash',
     routes: [
@@ -25,6 +26,7 @@ export default Vue.extend({
       { path: '/note-list', component: NoteList },
       { path: '/register', component: Register },
       { path: '/login', component: Login },
+      { path: '/sync-settings', component: SyncSettings },
     ],
   }),
 });

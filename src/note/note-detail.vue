@@ -3,9 +3,9 @@
     <input v-model="note.content">
     <button
       v-if="id"
-      v-on:click="remove"
+      @click="remove"
     >remove</button>
-    <button v-on:click="submit">submit</button>
+    <button @click="submit">submit</button>
   </div>
 </template>
 
