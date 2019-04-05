@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { v4 } from 'uuid';
 import { Note } from '../note/note.model';
 import { NoteService } from '../note/note.service';
 
@@ -25,15 +24,12 @@ export default Vue.extend({
     },
     remove: function(event: MouseEvent) {
       event.preventDefault();
-      NoteService.deleteNote(this.id);
+      NoteService.deleteNote(this.note);
       this.$router.push('/note-list');
     },
   },
   data: (): { note: Note } => ({
-    note: {
-      uuid: v4(),
-      content: '',
-    },
+    note: NoteService.getNewNote(),
   }),
   async mounted() {
     if (this.id) {

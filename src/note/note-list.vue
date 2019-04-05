@@ -28,7 +28,15 @@ export default Vue.extend({
     };
   },
   async mounted() {
-    this.notes = await NoteService.getNotes();
+    this.notes = (await NoteService.getNotes()).sort((a, b) => {
+      if (a.dateModified > b.dateModified) {
+        return 1;
+      }
+      if (a.dateModified < b.dateModified) {
+        return -1;
+      }
+      return 0;
+    });
   },
   methods: {
     create: function(event: MouseEvent) {

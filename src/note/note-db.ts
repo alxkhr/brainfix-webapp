@@ -7,7 +7,7 @@ class NoteDB extends Dexie {
   constructor() {
     super('Brainfix');
     this.version(1).stores({
-      notes: '&uuid, content',
+      notes: '&uuid, content, dateModified, dateCreated, dateSync, synchronized, deleted',
     });
   }
 }
