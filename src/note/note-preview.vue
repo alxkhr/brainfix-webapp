@@ -1,26 +1,25 @@
 <template>
   <div>
     <span>{{ note.content }}</span>
-    <button @click="edit">edit</button>
-    <button @click="remove">remove</button>
+    <button @click="onEdit">edit</button>
+    <button @click="onRemove">remove</button>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { NoteService } from '../note/note.service';
+import { DeleteNoteActionPayload } from './note.state';
 
 export default Vue.extend({
-  props: ['note', 'onRemove'],
+  props: ['note'],
   methods: {
-    edit(event: MouseEvent) {
+    onEdit(event: MouseEvent) {
       event.preventDefault();
       this.$router.push(`/note-details?id=${this.note.uuid}`);
     },
-    remove(event: MouseEvent) {
+    onRemove(event: MouseEvent) {
       event.preventDefault();
-      NoteService.deleteNote(this.note.uuid);
-      this.onRemove(this.note);
+      this.$store.dispatch('deleteNote', { uuid: this.note.uuid } as DeleteNoteActionPayload);
     },
   },
 });
