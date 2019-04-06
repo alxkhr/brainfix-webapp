@@ -40,7 +40,11 @@ const actions: ActionTree<SyncState, RootState> = {
     if (!response.ok) {
       throw new Error('Connection failed.');
     }
-    return response.json();
+    const json = await response.json();
+    if (!json || !json[resourceName]) {
+      throw new Error('Server broken.');
+    }
+    return json[resourceName];
   },
 
   setServerUrl({ commit }, { serverUrl }: SetServerUrlActionPayload) {

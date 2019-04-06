@@ -34,7 +34,7 @@ const actions: ActionTree<NoteState, RootState> = {
   },
 
   async deleteNote({ commit, getters }, { uuid }: DeleteNoteActionPayload) {
-    commit('notesUpdated', [{ uuid, synchronized: false, deleted: true }]);
+    commit('noteUpdated', { uuid, synchronized: false, deleted: true });
     const affected: Note | null = getters.getNoteByUuid(uuid);
     if (affected) {
       await db.notes.put(affected);
@@ -42,7 +42,7 @@ const actions: ActionTree<NoteState, RootState> = {
   },
 
   async updateNote({ commit, getters }, { notePartial }: UpdateNoteActionPayload) {
-    commit('notesUpdated', [{ ...notePartial, synchronized: false }]);
+    commit('noteUpdated', { ...notePartial, synchronized: false });
     const affected: Note | null = getters.getNoteByUuid(notePartial.uuid);
     if (affected) {
       await db.notes.put(affected);
@@ -50,21 +50,22 @@ const actions: ActionTree<NoteState, RootState> = {
   },
 
   async createNote({ commit, getters }, { note }: CreateNoteActionPayload) {
-    commit('notesCreated', [{ ...note, synchronized: false }]);
+    commit('noteCreated', { ...note, synchronized: false });
     await db.notes.put(note);
   },
 
-  startPolling({ rootState, dispatch, getters, state }) {
+  startPollingNotes({ rootState, dispatch, commit, getters, state }) {
     setInterval(async () => {
       if (!rootState.authentication.token) {
         throw new Error("Can't sync without token.");
       }
-      const receivedNotes = (await dispatch('synchronize', {
+      const synchronizedNotes: Note[] = await dispatch('synchronize', {
         resourceName: 'notes',
         currentState: state.notes.filter((note) => !note.synchronized),
         lastSync: getters.lastSync,
-      } as SynchronizeActionPayload)) as Note[];
-      console.log(receivedNotes);
+      } as SynchronizeActionPayload);
+      commit('notesSynchronized', synchronizedNotes);
+      await Promise.all(synchronizedNotes.map((note) => db.notes.put(note)));
     }, 10000);
   },
 };
@@ -74,17 +75,26 @@ const mutations: MutationTree<NoteState> = {
     state.notes = notes;
   },
 
-  notesUpdated(state, notePartials: MinimalNotePartial[]) {
-    notePartials.forEach((notePartial) => {
-      const affected = state.notes.find((note) => note.uuid === notePartial.uuid);
+  notesSynchronized(state, notes: Note[]) {
+    notes.forEach((synchronizedNote) => {
+      const affected = state.notes.find((note) => note.uuid === synchronizedNote.uuid);
       if (affected) {
-        Object.assign(affected, notePartial);
+        Object.assign(affected, synchronizedNote);
+      } else {
+        state.notes.push(synchronizedNote);
       }
     });
   },
 
-  notesCreated(state, notes: Note[]) {
-    state.notes = state.notes.concat(notes);
+  noteUpdated(state, notePartial: MinimalNotePartial) {
+    const affected = state.notes.find((note) => note.uuid === notePartial.uuid);
+    if (affected) {
+      Object.assign(affected, notePartial);
+    }
+  },
+
+  noteCreated(state, note: Note) {
+    state.notes.push(note);
   },
 };
 

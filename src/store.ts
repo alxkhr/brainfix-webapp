@@ -25,6 +25,7 @@ export default new Vuex.Store<RootState>({
   actions: {
     async loadInitialState({ dispatch }) {
       await dispatch('loadNotes');
+      await dispatch('startPollingNotes');
     },
   },
   strict: debug,
