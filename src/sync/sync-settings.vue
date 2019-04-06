@@ -3,21 +3,24 @@
     <input
       class="url-input"
       v-model="url"
-      @input="onUrlChange"
     >
   </form>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { ConfigService } from '../config/config.service';
+import { SyncState, SetServerUrlActionPayload } from './sync.state';
 export default Vue.extend({
-  data: () => ({
-    url: ConfigService.getServerUrl(),
-  }),
-  methods: {
-    onUrlChange: function() {
-      ConfigService.setServerUrl(this.url);
+  computed: {
+    url: {
+      get(): string {
+        return this.$store.state.sync.serverUrl;
+      },
+      set(url: string) {
+        this.$store.dispatch('setServerUrl', {
+          serverUrl: url,
+        } as SetServerUrlActionPayload);
+      },
     },
   },
 });

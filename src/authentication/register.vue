@@ -5,13 +5,13 @@
       v-model="password"
       type="password"
     >
-    <button @click="register">register</button>
+    <button @click="onRegister">register</button>
   </form>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { AuthenticationService } from './authentication.service';
+import { RegisterActionPayload } from './authentication.state';
 
 export default Vue.extend({
   data: () => ({
@@ -19,10 +19,13 @@ export default Vue.extend({
     password: '',
   }),
   methods: {
-    register: async function(event: MouseEvent) {
+    async onRegister(event: MouseEvent) {
       event.preventDefault();
       try {
-        await AuthenticationService.register(this.user, this.password);
+        await this.$store.dispatch('register', {
+          username: this.user,
+          password: this.password,
+        } as RegisterActionPayload);
         this.$router.push('/note-list');
       } catch (e) {
         console.error(e);

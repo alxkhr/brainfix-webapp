@@ -17,12 +17,12 @@ import { NoteService } from '../note/note.service';
 export default Vue.extend({
   props: ['id'],
   methods: {
-    submit: function(event: MouseEvent) {
+    submit(event: MouseEvent) {
       event.preventDefault();
       NoteService.putNote(this.note);
       this.$router.push('/note-list');
     },
-    remove: function(event: MouseEvent) {
+    remove(event: MouseEvent) {
       event.preventDefault();
       NoteService.deleteNote(this.note);
       this.$router.push('/note-list');

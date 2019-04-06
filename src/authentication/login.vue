@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { AuthenticationService } from './authentication.service';
+import { LoginActionPayload } from './authentication.state';
 
 export default Vue.extend({
   data: () => ({
@@ -22,7 +22,10 @@ export default Vue.extend({
     login: async function(event: MouseEvent) {
       event.preventDefault();
       try {
-        await AuthenticationService.login(this.user, this.password);
+        await this.$store.dispatch('login', {
+          username: this.user,
+          password: this.password,
+        } as LoginActionPayload);
         this.$router.push('/note-list');
       } catch (e) {
         console.error(e);

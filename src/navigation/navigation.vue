@@ -12,22 +12,25 @@
     <a
       href="#"
       v-if="token"
-      @click="logout"
+      @click="onLogout"
     >logout</a>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { ConfigService } from '../config/config.service';
+import { AuthenticationState } from '../authentication/authentication.state';
+
 export default Vue.extend({
-  data: () => ({
-    token: ConfigService.getToken(),
-  }),
+  computed: {
+    token(): string | undefined {
+      return this.$store.state.authentication.token;
+    },
+  },
   methods: {
-    logout: function(event: MouseEvent) {
+    onLogout(event: MouseEvent) {
       event.preventDefault();
-      ConfigService.setToken(null);
+      this.$store.dispatch('logout');
     },
   },
 });

@@ -15,6 +15,8 @@ import Login from './authentication/login.vue';
 import SyncSettings from './sync/sync-settings.vue';
 import Navigation from './navigation/navigation.vue';
 
+Vue.use(VueRouter);
+
 export default Vue.extend({
   components: {
     Navigation,

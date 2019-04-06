@@ -39,11 +39,11 @@ export default Vue.extend({
     });
   },
   methods: {
-    create: function(event: MouseEvent) {
+    create(event: MouseEvent) {
       event.preventDefault();
       this.$router.push('/note-details');
     },
-    onRemove: function(note: Note) {
+    onRemove(note: Note) {
       this.notes.splice(this.notes.indexOf(note), 1);
     },
   },

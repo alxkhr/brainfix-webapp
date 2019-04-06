@@ -13,11 +13,11 @@ import { NoteService } from '../note/note.service';
 export default Vue.extend({
   props: ['note', 'onRemove'],
   methods: {
-    edit: function(event: MouseEvent) {
+    edit(event: MouseEvent) {
       event.preventDefault();
       this.$router.push(`/note-details?id=${this.note.uuid}`);
     },
-    remove: function(event: MouseEvent) {
+    remove(event: MouseEvent) {
       event.preventDefault();
       NoteService.deleteNote(this.note.uuid);
       this.onRemove(this.note);

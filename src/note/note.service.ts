@@ -1,7 +1,5 @@
 import { v4 } from 'uuid';
 
-import { ConfigService } from '../config/config.service';
-import { SyncService } from '../sync/sync.service';
 import { db } from './note-db';
 import { Note } from './note.model';
 
@@ -30,23 +28,23 @@ export namespace NoteService {
     return db.notes.get(uuid);
   }
   export function startPolling(): void {
-    setInterval(async () => {
-      if (!ConfigService.getToken()) {
-        return;
-      }
-      const notes = await db.notes.toArray();
-      const lastSync =
-        notes
-          .map(({ dateSync }) => dateSync)
-          .sort()
-          .pop() || '0';
-      const synchronizedNotes = await SyncService.synchronize<Note[]>(
-        'notes',
-        'notes',
-        notes.filter((note) => !note.synchronized),
-        lastSync,
-      );
-      console.log(synchronizedNotes);
-    }, 10000);
+    // setInterval(async () => {
+    //   if (!ConfigService.getToken()) {
+    //     return;
+    //   }
+    //   const notes = await db.notes.toArray();
+    //   const lastSync =
+    //     notes
+    //       .map(({ dateSync }) => dateSync)
+    //       .sort()
+    //       .pop() || '0';
+    //   const synchronizedNotes = await SyncService.synchronize<Note[]>(
+    //     'notes',
+    //     'notes',
+    //     notes.filter((note) => !note.synchronized),
+    //     lastSync,
+    //   );
+    //   console.log(synchronizedNotes);
+    // }, 10000);
   }
 }
