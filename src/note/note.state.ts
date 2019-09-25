@@ -2,6 +2,7 @@ import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
 
 import { RootState } from '../store';
 import { SynchronizeActionPayload } from '../sync/sync.state';
+import { TagService } from '../tag/tag.service';
 import { db } from './note.db';
 import { Note } from './note.model';
 
@@ -49,7 +50,7 @@ const actions: ActionTree<NoteState, RootState> = {
     }
   },
 
-  async createNote({ commit, getters }, { note }: CreateNoteActionPayload) {
+  async createNote({ commit }, { note }: CreateNoteActionPayload) {
     commit('noteCreated', { ...note, synchronized: false });
     await db.notes.put(note);
   },
@@ -117,6 +118,11 @@ const getters: GetterTree<NoteState, RootState> = {
         }
         return 0;
       }),
+  searchTags: (state) => (query: string) => {
+    return TagService.getTagsInNotes(state.notes.filter((note) => !note.deleted))
+      .filter((tag) => tag.name.startsWith(query))
+      .sort((a, b) => (a.count > b.count ? 1 : -1));
+  },
 };
 
 export const noteModule: Module<NoteState, RootState> = {

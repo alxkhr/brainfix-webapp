@@ -1,6 +1,7 @@
 <template>
   <div>
-    <input v-model="note.content">
+    <!-- <div v-editable-tags="note.content"></div> -->
+    <tagged-text :text.sync="note.content" />
     <button
       v-if="id"
       @click="remove"
@@ -18,9 +19,14 @@ import {
   CreateNoteActionPayload,
 } from './note.state';
 import { NoteService } from './note.service';
+// import '../tag/editable-tags.directive';
+import TaggedText from '../tag/tagged-text.vue';
 
 export default Vue.extend({
   props: ['id'],
+  components: {
+    TaggedText,
+  },
   methods: {
     submit(event: MouseEvent) {
       event.preventDefault();
